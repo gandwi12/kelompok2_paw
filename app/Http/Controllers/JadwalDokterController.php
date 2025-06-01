@@ -51,6 +51,20 @@ class JadwalDokterController extends Controller
         return view('jadwal.edit', compact('jadwal', 'dokters'));
     }
 
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'dokter_id' => 'required|exists:users,id',
+            'hari' => 'required',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required|after:jam_mulai',
+        ]);
+
+        $jadwal = JadwalDokter::findOrFail($id);
+        $jadwal->update($request->all());
+
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui');
+    }
 
 
 
