@@ -6,22 +6,35 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('_pemeriksaan__riwayat', function (Blueprint $table) {
-            $table->id();
+        Schema::create('mahasiswa', function (Blueprint $table) {
+            $table->id();  // id bertipe unsignedBigInteger auto increment
+            $table->string('nama');
+            $table->string('nim')->unique();
+            $table->string('email')->unique()->nullable();
             $table->timestamps();
         });
+
+        Schema::create('pemeriksaan_riwayat', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('mahasiswa_id');  // harus unsignedBigInteger kalau pasien.id juga id()
+            $table->date('tanggal_pemeriksaan');
+            $table->string('diagnosa');
+            $table->text('keterangan')->nullable();
+            $table->timestamps();
+            
+            $table->foreign('mahasiswa_id')
+            ->references('id')->on('mahasiswa')
+            ->onDelete('cascade');
+
+        
+});
+
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('_pemeriksaan__riwayat');
+        Schema::dropIfExists('pemeriksaan_riwayat');
     }
 };
