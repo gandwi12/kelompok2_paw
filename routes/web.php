@@ -33,7 +33,9 @@ Route::get('/dashboard', function () {
     });
 
     /*  Routes untuk Fitur JadwalDokter  */
-
+    Route::middleware(['auth'])->group(function () {
+    Route::resource('jadwal', JadwalDokterController::class);
+    });
 
     /*  Routes untuk Fitur PemberianObat  */
 
