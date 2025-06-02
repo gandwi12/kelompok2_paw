@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pemberian_obat', function (Blueprint $table) {
+        Schema::create('pemberian_obats', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_obat');
+            $table->text('keterangan')->nullable();
+            $table->enum('status', ['siap_diberikan', 'diberikan'])->default('siap_diberikan');
+            $table->timestamp('diberikan_pada')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->text('catatan')->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pemberian_obat');
+        Schema::dropIfExists('pemberian_obats');
     }
 };
