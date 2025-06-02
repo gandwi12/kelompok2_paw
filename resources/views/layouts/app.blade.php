@@ -7,7 +7,7 @@
 </head>
 <body>
     {{-- Include navbar --}}
-    @include('layouts.navbar')
+    
 
     <div class="container mt-4">
         <h2 class="mb-4">Sistem Booking Dokter</h2>
