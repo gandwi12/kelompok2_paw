@@ -40,11 +40,14 @@
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-        {{ __('Log Out') }}
-    </button>
-</form>
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
                     </x-slot>
                 </x-dropdown>
             </div>
