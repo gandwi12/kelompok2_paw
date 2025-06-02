@@ -34,7 +34,7 @@ Route::get('/dashboard', function () {
 
     /*  Routes untuk Fitur JadwalDokter  */
 Route::resource('jadwals', JadwalDokterController::class); 
-Route::get('/jadwal', [JadwalDokterController::class, 'index'])->name('jadwals.index');
+Route::get('/jadwals', [JadwalDokterController::class, 'index'])->name('jadwals.index');
 Route::get('/jadwals/create', [JadwalDokterController::class, 'create'])->name('jadwals.create');
 Route::post('/jadwals', [JadwalDokterController::class, 'store'])->name('jadwals.store');
 
