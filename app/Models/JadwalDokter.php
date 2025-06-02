@@ -2,22 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JadwalDokter extends Model
 {
-    protected $table = 'jadwal_dokter'; // pastikan sama dengan nama tabel di migration
+    use HasFactory;
 
-    protected $fillable = [
-        'dokter_id',
-        'hari',
-        'jam_mulai',
-        'jam_selesai',
-    ];
-
-    // relasi ke tabel users, asumsinya dokter disimpan di tabel users
-    public function dokter()
-    {
-        return $this->belongsTo(User::class, 'dokter_id');
-    }
+    protected $fillable = ['nama_dokter', 'hari', 'jam_mulai', 'jam_selesai'];
 }
+

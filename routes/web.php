@@ -33,9 +33,10 @@ Route::get('/dashboard', function () {
     });
 
     /*  Routes untuk Fitur JadwalDokter  */
-    Route::middleware(['auth'])->group(function () {
-    Route::resource('jadwal', JadwalDokterController::class);
-    });
+Route::resource('jadwals', JadwalDokterController::class); 
+Route::get('/jadwal', [JadwalDokterController::class, 'index'])->name('jadwals.index');
+Route::get('/jadwals/create', [JadwalDokterController::class, 'create'])->name('jadwals.create');
+Route::post('/jadwals', [JadwalDokterController::class, 'store'])->name('jadwals.store');
 
     /*  Routes untuk Fitur PemberianObat  */
 

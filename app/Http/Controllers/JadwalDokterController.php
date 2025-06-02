@@ -3,75 +3,84 @@
 namespace App\Http\Controllers;
 
 use App\Models\JadwalDokter;
-use App\Models\User;
 use Illuminate\Http\Request;
+
 
 class JadwalDokterController extends Controller
 {
+    // GET /api/jadwal
+     public function index()
+    {
+        $jadwals = JadwalDokter::all();
+        return view('jadwals.index', compact('jadwals'));
     
-    public function index()
-    {
-        $jadwals = JadwalDokter::with('dokter')->get(); 
-        return view('jadwal.index', compact('jadwals'));
     }
 
-
-    public function create()
+    public function create() 
     {
-        $dokters = User::where('role', 'dokter')->get(); 
-        return view('jadwal.create', compact('dokters'));
+    return view('jadwals.create'); 
     }
 
+    // GET /api/jadwal/{id}
+    public function show($id)
+    {
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
+        }
+        return response()->json($jadwal);
+    }
+
+    // POST /api/jadwal
     public function store(Request $request)
     {
-        $request->validate([
-            'dokter_id' => 'required|exists:users,id',
-            'hari' => 'required',
+        $validated = $request->validate([
+            'nama_dokter' => 'required|string',
+            'hari' => 'required|string',
             'jam_mulai' => 'required',
-            'jam_selesai' => 'required|after:jam_mulai',
+            'jam_selesai' => 'required',
         ]);
 
-        JadwalDokter::create($request->all());
-
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil ditambahkan');
+        $jadwal = JadwalDokter::create($validated);
+        return redirect()->route('jadwals.index')->with('success', 'Jadwal berhasil ditambahkan');
     }
 
-   
-    public function show(string $id)
+    // PUT /api/jadwal/{id}
+    public function update(Request $request, $id)
     {
-        $jadwal = JadwalDokter::with('dokter')->findOrFail($id);
-        return view('jadwal.show', compact('jadwal'));
-    }
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
+        }
 
-  
-    public function edit(string $id)
-    {
-        $jadwal = JadwalDokter::findOrFail($id);
-        $dokters = User::where('role', 'dokter')->get();
-        return view('jadwal.edit', compact('jadwal', 'dokters'));
-    }
-
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'dokter_id' => 'required|exists:users,id',
-            'hari' => 'required',
+        $validated = $request->validate([
+            'nama_dokter' => 'required|string',
+            'hari' => 'required|string',
             'jam_mulai' => 'required',
-            'jam_selesai' => 'required|after:jam_mulai',
+            'jam_selesai' => 'required',
         ]);
 
-        $jadwal = JadwalDokter::findOrFail($id);
-        $jadwal->update($request->all());
-
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui');
+        $jadwal->update($validated);
+        return redirect()->route('jadwals.index')->with('success', 'Jadwal berhasil diperbarui');
     }
 
-    public function destroy(string $id)
+
+    public function edit($id) 
     {
         $jadwal = JadwalDokter::findOrFail($id);
-        $jadwal->delete();
-
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dihapus');
+        return view('jadwals.edit', compact('jadwal'));
     }
 
+
+    // DELETE /api/jadwal/{id}
+    public function destroy($id)
+    {
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+        return redirect()->route('jadwals.index')->with('error', 'Jadwal tidak ditemukan');
+    }
+
+    $jadwal->delete();
+    return redirect()->route('jadwals.index')->with('success', 'Jadwal berhasil dihapus');
+    }
 }

@@ -9,11 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('jadwals_dokters', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+    public function up() {
+    Schema::create('jadwal_dokters', function (Blueprint $table) {
+        $table->id();
+        $table->string('nama_dokter'); 
+        $table->string('hari');
+        $table->time('jam_mulai');
+        $table->time('jam_selesai');
+        $table->timestamps();
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwals_dokters');
+        Schema::dropIfExists('jadwal_dokters');
     }
 };
