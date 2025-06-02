@@ -14,9 +14,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+});
+
 
 //  /*  Routes untuk Fitur Menu  */ (ini contoh,ntar kalian isi sendiri sesuain)
     Route::controller(BookingController::class) 
@@ -33,13 +36,27 @@ Route::get('/dashboard', function () {
     });
 
     /*  Routes untuk Fitur JadwalDokter  */
-
+Route::resource('jadwals', JadwalDokterController::class); 
+Route::get('/jadwals', [JadwalDokterController::class, 'index'])->name('jadwals.index');
+Route::get('/jadwals/create', [JadwalDokterController::class, 'create'])->name('jadwals.create');
+Route::post('/jadwals', [JadwalDokterController::class, 'store'])->name('jadwals.store');
 
     /*  Routes untuk Fitur PemberianObat  */
 
 
     /*  Routes untuk Fitur Pemeriksaan  */
-
+    Route::resource('pemeriksaan_riwayat', PemeriksaanRiwayatController::class);
+    Route::controller(PemeriksaanRiwayatController::class)
+    ->prefix('pemeriksaan')
+    ->group(function () {
+        Route::get('', 'index')->name('pemeriksaan.index');
+        Route::get('create', 'create')->name('pemeriksaan.create');
+        Route::post('store', 'store')->name('pemeriksaan.store');
+        Route::get('show/{id}', 'show')->name('pemeriksaan.show');
+        Route::get('edit/{id}', 'edit')->name('pemeriksaan.edit');
+        Route::put('update/{id}', 'update')->name('pemeriksaan.update');
+        Route::delete('destroy/{id}', 'destroy')->name('pemeriksaan.destroy');
+    });
 
     /*  Routes untuk Fitur Users  */
     
