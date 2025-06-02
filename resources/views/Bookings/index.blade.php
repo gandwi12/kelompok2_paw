@@ -63,7 +63,7 @@
                         <a href="{{ route('bookings.edit', $b->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{ route('bookings.destroy', $b->id) }}" method="POST" style="display:inline">
                             @csrf @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin?')">Delete</button>
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau dihapus?')">Delete</button>
                         </form>
                     </td>
                 </tr>
