@@ -8,3 +8,5 @@ class Booking extends Model
 {
     //
 }
+
+
