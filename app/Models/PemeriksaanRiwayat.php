@@ -10,7 +10,7 @@ class PemeriksaanRiwayat extends Model
     protected $table = 'pemeriksaan_riwayat'; // nama tabel di database
 
     protected $fillable = [
-        'pasien_id',
+        'nama_mahasiswa',
         'tanggal_pemeriksaan',
         'diagnosa',
         'keterangan',
@@ -19,7 +19,7 @@ class PemeriksaanRiwayat extends Model
     // Relasi ke model Pasien
     public function mahasiswa()
 {
-    return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
+    return $this->belongsTo(Mahasiswa::class, 'nama_mahasiswa', 'nama');
 }
 
 }

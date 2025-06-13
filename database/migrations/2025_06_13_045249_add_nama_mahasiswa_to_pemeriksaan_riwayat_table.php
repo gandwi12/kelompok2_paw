@@ -22,7 +22,7 @@ class UpdatePemeriksaanRiwayatTable extends Migration
         Schema::table('pemeriksaan_riwayat', function (Blueprint $table) {
             // Balikkan perubahan jika rollback migration
             if (!Schema::hasColumn('pemeriksaan_riwayat', 'nama_mahasiswa')) {
-                $table->unsignedBigInteger('nama_mahasiswa')->nullable()->after('id');
+                $table->unsignedBigInteger('nama_mahasiswa')->nullable()->after('nama_mahasiswa');
             }
 
         });
