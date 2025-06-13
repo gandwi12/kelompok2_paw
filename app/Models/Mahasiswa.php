@@ -9,7 +9,7 @@ class Mahasiswa extends Model
     protected $table = 'mahasiswa'; // sesuaikan nama tabel di DB
 
     protected $fillable = [
-        'nama',
+        'nama_mahasiswa',
         'alamat',
         'tanggal_lahir',
         // kolom lain yang relevan
@@ -18,6 +18,6 @@ class Mahasiswa extends Model
     // Relasi ke pemeriksaan riwayat
     public function pemeriksaanRiwayat()
     {
-        return $this->hasMany(PemeriksaanRiwayat::class, 'mahasiswa_id');
+        return $this->hasMany(PemeriksaanRiwayat::class, 'nama_mahasiswa', 'nama');
     }
 }
