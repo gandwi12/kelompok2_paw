@@ -4,37 +4,27 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class UpdatePemeriksaanRiwayatTable extends Migration
 {
-    public function up(): void
+    public function up()
     {
-        Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->id();  // id bertipe unsignedBigInteger auto increment
-            $table->string('nama');
-            $table->string('nim')->unique();
-            $table->string('email')->unique()->nullable();
-            $table->timestamps();
+        Schema::table('pemeriksaan_riwayat', function (Blueprint $table) {
+
+            // Tambahkan kolom nama_mahasiswa
+            if (!Schema::hasColumn('pemeriksaan_riwayat', 'nama_mahasiswa')) {
+                $table->string('nama_mahasiswa')->after('id');
+            }
         });
-
-        Schema::create('pemeriksaan_riwayat', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('mahasiswa_id');  // harus unsignedBigInteger kalau pasien.id juga id()
-            $table->date('tanggal_pemeriksaan');
-            $table->string('diagnosa');
-            $table->text('keterangan')->nullable();
-            $table->timestamps();
-            
-            $table->foreign('mahasiswa_id')
-            ->references('id')->on('mahasiswa')
-            ->onDelete('cascade');
-
-        
-});
-
     }
 
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('pemeriksaan_riwayat');
+        Schema::table('pemeriksaan_riwayat', function (Blueprint $table) {
+            // Balikkan perubahan jika rollback migration
+            if (!Schema::hasColumn('pemeriksaan_riwayat', 'nama_mahasiswa')) {
+                $table->unsignedBigInteger('nama_mahasiswa')->nullable()->after('id');
+            }
+
+        });
     }
-};
+}
