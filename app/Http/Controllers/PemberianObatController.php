@@ -3,22 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\PemberianObat;
+use App\Models\Obat; // pastikan ada model Obat
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PemberianObatController extends Controller
 {
     // GET /pemberian-obat
     public function index()
     {
-        $obats = PemberianObat::all();
-        return view('Obats.index', compact('obats'));
+        $obats = PemberianObat::with(['obat', 'user'])->get();
+        return view('PemberianObat.index', compact('obats'));
     }
 
     // GET /pemberian-obat/create
     public function create()
     {
-        $obats = PemberianObat::all();
-        return view('Obats.create', compact('obats'));
+        $obats = Obat::all(); // ambil semua obat untuk dropdown
+        return view('PemberianObat.create', compact('obats'));
     }
 
     // GET /pemberian-obat/{id}
@@ -40,15 +42,18 @@ class PemberianObatController extends Controller
             'catatan'        => 'nullable|string',
         ]);
 
+        $validated['user_id'] = Auth::id(); // set user id dari user login
+
         PemberianObat::create($validated);
-        return redirect()->route('obats.index')->with('success', 'Pemberian obat berhasil disimpan.');
+
+        return redirect()->route('pemberian-obat.index')->with('success', 'Pemberian obat berhasil disimpan.');
     }
 
     // GET /pemberian-obat/{id}/edit
     public function edit($id)
     {
         $pemberian = PemberianObat::findOrFail($id);
-        $obats = PemberianObat::all();
+        $obats = Obat::all();
         return view('PemberianObat.edit', compact('pemberian', 'obats'));
     }
 
@@ -66,7 +71,10 @@ class PemberianObatController extends Controller
             'catatan'        => 'nullable|string',
         ]);
 
+        $validated['user_id'] = Auth::id();
+
         $pemberian->update($validated);
+
         return redirect()->route('pemberian-obat.index')->with('success', 'Data berhasil diperbarui.');
     }
 
