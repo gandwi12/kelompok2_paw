@@ -29,7 +29,7 @@
                     <td>{{ $obat->nama_obat }}</td>
                     <td>{{ $obat->keterangan }}</td>
                     <td>
-                        @if($obat->status === 'diberikan')
+                        @if($obat->status === 'Sudah Diberikan')
                             <span class="badge bg-success">Sudah Diberikan</span>
                         @else
                             <span class="badge bg-warning text-dark">Siap Diberikan</span>
