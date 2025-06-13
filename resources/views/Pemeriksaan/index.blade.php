@@ -1,12 +1,15 @@
-@extends('layouts.app')
+@extends('Pemeriksaan.app')
 
 @section('content')
 <div class="container">
     <h2>Daftar Riwayat Pemeriksaan Mahasiswa</h2>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+  @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 
     <a href="{{ route('pemeriksaan_riwayat.create') }}" class="btn btn-primary mb-3">Tambah Riwayat Pemeriksaan</a>
 
@@ -32,12 +35,12 @@
                     <td>
                         <a href="{{ route('pemeriksaan_riwayat.edit', $riwayat->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                        <form action="{{ route('pemeriksaan_riwayat.destroy', $riwayat->id) }}" method="POST" style="display:inline-block" 
-                            onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                        <form action="{{ route('pemeriksaan_riwayat.destroy', $riwayat->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger" type="submit">Hapus</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                         </form>
+
                     </td>
                 </tr>
             @empty
