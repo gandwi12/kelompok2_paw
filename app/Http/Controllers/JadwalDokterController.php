@@ -2,63 +2,85 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JadwalDokter;
 use Illuminate\Http\Request;
+
 
 class JadwalDokterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // GET /api/jadwal
+     public function index()
     {
-        //
+        $jadwals = JadwalDokter::all();
+        return view('jadwals.index', compact('jadwals'));
+    
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create() 
     {
-        //
+    return view('jadwals.create'); 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // GET /api/jadwal/{id}
+    public function show($id)
+    {
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
+        }
+        return response()->json($jadwal);
+    }
+
+    // POST /api/jadwal
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_dokter' => 'required|string',
+            'hari' => 'required|string',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
+        ]);
+
+        $jadwal = JadwalDokter::create($validated);
+        return redirect()->route('jadwals.index')->with('success', 'Jadwal berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // PUT /api/jadwal/{id}
+    public function update(Request $request, $id)
     {
-        //
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
+        }
+
+        $validated = $request->validate([
+            'nama_dokter' => 'required|string',
+            'hari' => 'required|string',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
+        ]);
+
+        $jadwal->update($validated);
+        return redirect()->route('jadwals.index')->with('success', 'Jadwal berhasil diperbarui');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+    public function edit($id) 
     {
-        //
+        $jadwal = JadwalDokter::findOrFail($id);
+        return view('jadwals.edit', compact('jadwal'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    // DELETE /api/jadwal/{id}
+    public function destroy($id)
     {
-        //
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+        return redirect()->route('jadwals.index')->with('error', 'Jadwal tidak ditemukan');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    $jadwal->delete();
+    return redirect()->route('jadwals.index')->with('success', 'Jadwal berhasil dihapus');
     }
 }

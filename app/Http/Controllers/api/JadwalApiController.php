@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\JadwalDokter;
 
 class JadwalApiController extends Controller
 {
-    //
+    public function index()
+    {
+        return response()->json(JadwalDokter::all());
+    }
 }

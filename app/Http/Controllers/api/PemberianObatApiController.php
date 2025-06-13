@@ -10,6 +10,7 @@ class PemberianObatApiController extends Controller
 {
     public function index()
     {
+
         // Ambil semua data pemberian obat beserta relasi obat dan user
         $pemberians = PemberianObat::with(['obat', 'user'])->get();
 
@@ -17,3 +18,13 @@ class PemberianObatApiController extends Controller
         return response()->json($pemberians);
     }
 }
+
+        //
+    }
+
+    public function show($id)
+    {
+        //
+    }
+}
+
