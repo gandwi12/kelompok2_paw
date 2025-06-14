@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\JadwalApiController;
 use App\Http\Controllers\API\PemeriksaanRiwayatApiController;
+use App\Http\Controllers\Api\BookingAPIController;
 
 
 /*  Routes API untuk Fitur Users  */
@@ -21,11 +22,8 @@ Route::get('/jadwal/{id}', [JadwalApiController::class, 'show']);
 
 
 /*  Routes API untuk Fitur Bookings  */
-Route::middleware('api')
-    ->prefix('api')
-    ->group(function () {
-        //
-    });
+Route::get('/booking', [BookingAPIController::class, 'index']);
+Route::get('/booking/{id}', [BookingAPIController::class, 'show']);
 
 /*  Routes API untuk Fitur Pemeriksaan  */
 Route::middleware('api')

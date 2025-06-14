@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a href="{{ route('obats.index') }}" class="btn btn-secondary">Kembali</a>
+                    <a href="{{ route('pemberian-obat.store') }}" class="btn btn-secondary">Kembali</a>
                 </div>
             </div>
         </div>

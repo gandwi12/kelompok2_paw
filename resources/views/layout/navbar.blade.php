@@ -8,6 +8,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('jadwals.create') }}">Tambah Jadwal</a>
                 </li>
+                <li>
+                     <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                </li>
             </ul>
         </div>
     </div>

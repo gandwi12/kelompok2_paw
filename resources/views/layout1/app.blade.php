@@ -10,7 +10,7 @@
     
 
     <div class="container mt-4">
-        <h2 class="mb-4">Riwayat Pemeriksaan Mahasiswa</h2>
+        <h2 class="mb-4">Sistem Booking Dokter</h2>
 
         {{-- Pesan sukses --}}
         @if (session('success'))

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PemeriksaanRiwayat;
+use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\Log;
 
 
 class PemeriksaanRiwayatController extends Controller
@@ -12,39 +14,44 @@ class PemeriksaanRiwayatController extends Controller
      * Display a listing of the resource.
      * Menampilkan semua riwayat pemeriksaan pasien.
      */
-    public function index()
-    {
-        $riwayats = PemeriksaanRiwayat::with('mahasiswa')->get();
-        return view('pemeriksaan.index', compact('riwayats'));
-    }
+   public function index()
+{
+    $riwayats = PemeriksaanRiwayat::latest()->get();
+    return view('Pemeriksaan.index', compact('riwayats'));
+}
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('pemeriksaan.create');
-    }
+{
+    $mahasiswa = Mahasiswa::all(); // kalau mau pakai data mahasiswa di form
+    return view('Pemeriksaan.create', compact('mahasiswa'));
+}
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'pasien_id' => 'required|integer',
-            'tanggal_pemeriksaan' => 'required|date',
-            'diagnosa' => 'required|string',
-            'keterangan' => 'nullable|string',
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nama_mahasiswa' => 'required|string|max:255',
+        'tanggal_pemeriksaan' => 'required|date',
+        'diagnosa' => 'required|string',
+        'keterangan' => 'nullable|string',
+    ]);
 
-        $riwayat = PemeriksaanRiwayat::create($validated);
+    PemeriksaanRiwayat::create($validated);
 
-        return response()->json([
-            'message' => 'Riwayat pemeriksaan berhasil dibuat',
-            'data' => $riwayat
-        ], 201);
-    }
+    return redirect()->route('pemeriksaan_riwayat.index')
+                     ->with('success', 'Riwayat pemeriksaan berhasil disimpan');
+}
+
+
+
+
 
     /**
      * Display the specified resource.
@@ -63,56 +70,58 @@ class PemeriksaanRiwayatController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        $riwayat = PemeriksaanRiwayat::find($id);
+   public function edit($id)
+{
+    $pemeriksaanRiwayat = PemeriksaanRiwayat::findOrFail($id);
+    $mahasiswa = Mahasiswa::all();
 
-        if (!$riwayat) {
-            return redirect()->route('pemeriksaan_riwayat.index')->with('error', 'Data tidak ditemukan.');
-        }
+    return view('Pemeriksaan.edit', compact('pemeriksaanRiwayat', 'mahasiswa'));
+}
 
-        return view('pemeriksaan.edit', compact('riwayat'));
-    }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $riwayat = PemeriksaanRiwayat::find($id);
+  public function update(Request $request, $id)
+{
+    $validated = $request->validate([
+        'nama_mahasiswa' => 'required|string|max:255',
+        'tanggal_pemeriksaan' => 'required|date',
+        'diagnosa' => 'required|string',
+        'keterangan' => 'nullable|string',
+    ]);
 
-        if (!$riwayat) {
-            return response()->json(['message' => 'Riwayat tidak ditemukan'], 404);
-        }
+    $riwayat = PemeriksaanRiwayat::findOrFail($id);
+    $riwayat->update($validated);
 
-        $validated = $request->validate([
-            'pasien_id' => 'sometimes|integer',
-            'tanggal_pemeriksaan' => 'sometimes|date',
-            'diagnosa' => 'sometimes|string',
-            'keterangan' => 'nullable|string',
-        ]);
+    // Redirect ke halaman index atau show dengan pesan sukses
+    return redirect()->route('pemeriksaan_riwayat.index')
+        ->with('success', 'Riwayat berhasil diperbarui');
+}
 
-        $riwayat->update($validated);
 
-        return response()->json([
-            'message' => 'Riwayat berhasil diperbarui',
-            'data' => $riwayat
-        ], 200);
-    }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $riwayat = PemeriksaanRiwayat::find($id);
+   public function destroy($id)
+{
+    Log::info("Menerima request hapus dengan ID: $id");
 
-        if (!$riwayat) {
-            return response()->json(['message' => 'Riwayat tidak ditemukan'], 404);
-        }
-
-        $riwayat->delete();
-
-        return response()->json(['message' => 'Riwayat berhasil dihapus'], 200);
+    $riwayat = PemeriksaanRiwayat::find($id);
+    if (!$riwayat) {
+        Log::warning("Data dengan ID $id tidak ditemukan");
+        return response()->json(['message' => 'Riwayat tidak ditemukan'], 404);
     }
+
+    $riwayat->delete();
+    Log::info("Data dengan ID $id berhasil dihapus");
+
+    return redirect()->route('pemeriksaan_riwayat.index')
+        ->with('success', 'Riwayat berhasil dihapus');
+}
+
+
 }

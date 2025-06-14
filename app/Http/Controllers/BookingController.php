@@ -2,63 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Jadwal;
+use App\Models\JadwalDokters;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $doctors = JadwalDokters::all();
+        $bookings = Booking::with('doctor')->get();
+
+        return view('bookings.index', compact('doctors', 'bookings'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $jadwal = JadwalDokters::findOrFail($request->doctor);
+        return view('bookings.create', compact('jadwal'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'doctor_id' => 'required|exists:jadwal_dokters,id',
+            'nama'      => 'required|string',
+            'nim'       => 'required|string',
+            'diagnosa'  => 'required|string',
+        ]);
+
+        $data['user_id'] = 0; // Dummy user_id, bisa diganti jika pakai auth
+
+        Booking::create($data);
+
+        return redirect()->route('bookings.index')
+                         ->with('success', 'Booking berhasil!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $booking = Booking::findOrFail($id);
+        $doctors = JadwalDokters::all();
+        return view('bookings.edit', compact('booking', 'doctors'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $booking = Booking::findOrFail($id);
+        $data = $request->validate([
+            'doctor_id' => 'required|exists:jadwal_dokters,id',
+            'nama'      => 'required|string',
+            'nim'       => 'required|string',
+            'diagnosa'  => 'required|string',
+        ]);
+
+        $booking->update($data);
+
+        return redirect()->route('bookings.index')
+                         ->with('success', 'Booking diperbarui!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
-    }
+        Booking::findOrFail($id)->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('bookings.index')
+                         ->with('success', 'Booking dibatalkan.');
     }
 }

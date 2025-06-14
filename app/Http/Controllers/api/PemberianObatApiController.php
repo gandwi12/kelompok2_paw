@@ -17,14 +17,15 @@ class PemberianObatApiController extends Controller
         // Kembalikan dalam format JSON
         return response()->json($pemberians);
     }
-}
 
-        //
-    }
-
+    
     public function show($id)
     {
         //
     }
 }
 
+        //
+    
+
+  

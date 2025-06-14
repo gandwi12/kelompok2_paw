@@ -3,29 +3,13 @@
 
 namespace App\Http\Controllers\Api;
 
-namespace App\Http\Controllers\API;
-
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PemeriksaanRiwayat; 
 use Illuminate\Support\Facades\Validator;
 
 class PemeriksaanRiwayatApiController extends Controller
-{
-
-    public function index()
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-}
-=======
-    /**
+{   /**
      * Menampilkan semua riwayat pemeriksaan (bisa difilter per pasien)
      */
     public function index(Request $request)

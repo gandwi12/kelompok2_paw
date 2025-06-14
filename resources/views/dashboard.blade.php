@@ -19,24 +19,26 @@
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-white p-6 shadow rounded-lg">
             <h3 class="text-lg font-bold">User</h3>
-            <a href="" class="text-blue-600 underline">Lihat</a>
+            {{-- <a href="" class="text-blue-600 underline">Lihat</a>
+             --}}
+             <a href="{{ route('users.index') }}" class="text-blue-600 underline">Lihat</a>
+
         </div>
         <div class="bg-white p-6 shadow rounded-lg">
             <h3 class="text-lg font-bold">Booking</h3>
-            <a href="" class="text-blue-600 underline">Lihat</a>
+            <a href="{{ route('bookings.index') }}" class="text-blue-600 underline">Lihat</a>
         </div>
         <div class="bg-white p-6 shadow rounded-lg">
             <h3 class="text-lg font-bold">Jadwal</h3>
-            <a href="" class="text-blue-600 underline">Lihat</a>
+            <a href="{{ route('jadwals.index') }}" class="text-blue-600 underline">Lihat</a>
         </div>
         <div class="bg-white p-6 shadow rounded-lg">
             <h3 class="text-lg font-bold">Riwayat</h3>
-            <a href="" class="text-blue-600 underline">Lihat</a>
+            <a href="{{ route('pemeriksaan.index') }}" class="text-blue-600 underline">Lihat</a>
         </div>
         <div class="bg-white p-6 shadow rounded-lg">
             <h3 class="text-lg font-bold">Resep</h3>
-            <a href="" class="text-blue-600 underline">Lihat</a>
+            <a href="{{ route('pemberian-obat.create') }}" class="text-blue-600 underline">Lihat</a>
         </div>
     </div>
 </x-app-layout>
-

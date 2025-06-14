@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\controllers\PemeriksaanRiwayatController;
+use App\Http\controllers\BookingController;
+use App\Http\Controllers\JadwalDokterController;
+use App\Http\Controllers\PemberianObatController;
+use App\Models\PemberianObat;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,18 +24,22 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::resource('users', UserController::class);
+
+
+
 //  /*  Routes untuk Fitur Menu  */ (ini contoh,ntar kalian isi sendiri sesuain)
     Route::controller(BookingController::class) 
     ->prefix('menu')
     ->middleware(['auth', 'verified'])
     ->group(function () {
-        Route::get('', 'index')->name('menu');
-        Route::get('create', 'create')->name('menu.create');
-        Route::post('store', 'store')->name('menu.store');
-        Route::get('show/{id}', 'show')->name('menu.show');
-        Route::get('edit/{id}', 'edit')->name('menu.edit');
-        Route::put('edit/{id}', 'update')->name('menu.update');
-        Route::delete('destroy/{id}', 'destroy')->name('menu.destroy');
+        Route::get('', 'index')->name('bookings.index');
+        Route::get('create', 'create')->name('bookings.create');
+        Route::post('store', 'store')->name('bookings.store');
+        Route::get('show/{id}', 'show')->name('bookings.show');
+        Route::get('edit/{id}', 'edit')->name('bookings.edit');
+        Route::put('edit/{id}', 'update')->name('bookings.update');
+        Route::delete('destroy/{id}', 'destroy')->name('bookings.destroy');
     });
 
     /*  Routes untuk Fitur JadwalDokter  */
@@ -39,6 +49,11 @@ Route::get('/jadwals/create', [JadwalDokterController::class, 'create'])->name('
 Route::post('/jadwals', [JadwalDokterController::class, 'store'])->name('jadwals.store');
 
     /*  Routes untuk Fitur PemberianObat  */
+
+
+Route::resource('Pemberian-obat', PemberianObatController::class);
+Route::get('/Pemberian-obat', [PemberianObat::class, 'index'])->name('Pemberian.index');
+Route::get('/Pemberian-obat/create', [PemberianObat::class, 'index'])->name('Pemberian.create');
 
 
     /*  Routes untuk Fitur Pemeriksaan  */
